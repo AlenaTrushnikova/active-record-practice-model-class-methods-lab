@@ -1,24 +1,24 @@
 class Captain < ActiveRecord::Base
   has_many :boats
 
-  def self.catamaran_operators
-    # includes(boats: :classifications).where(classifications: {name: "Catamaran"})
+  def self.catamaran_operators #returns all captains of catamaran
+    includes(boats: :classifications).where(classifications: {name: "Catamaran"})
   end
 
-  def self.sailors
-    # includes(boats: :classifications).where(classifications: {name: "Sailboat"}).distinct
+  def self.sailors #returns captains with sailboats
+    includes(boats: :classifications).where(classifications: {name: "Sailboat"}).distinct
   end
 
-  def self.motorboat_operators
-    # includes(boats: :classifications).where(classifications: {name: "Motorboat"})
+  def self.motorboat_operators #returns all captains of motorboat
+    includes(boats: :classifications).where(classifications: {name: "Motorboat"})
   end
 
-  def self.talented_seafarers
-    # where("id IN (?)", self.sailors.pluck(:id) & self.motorboat_operators.pluck(:id))
+  def self.talented_seafarers #returns captains of motorboats and sailboats
+    where("id IN (?)", self.sailors.pluck(:id) & self.motorboat_operators.pluck(:id))
   end
 
-  def self.non_sailors
-    # where.not("id IN (?)", self.sailors.pluck(:id))
+  def self.non_sailors #returns people who are not captains of sailboats
+    where.not("id IN (?)", self.sailors.pluck(:id))
   end
 
 end
